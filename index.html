@@ -25,7 +25,9 @@
           />
         </div>
         <div class="buttons control is-justify-content-center">
-          <a class="button is-info has-text-black-bis"> Search </a>
+          <a id="search-button" class="button is-info has-text-black-bis">
+            Search
+          </a>
         </div>
       </div>
       <section
@@ -53,11 +55,17 @@
               >Next up! Reactjs lol jk...</strong
             >!
           </p>
+          <div id="results" class="container" style="display: none">
+            <div class="notification is-primary">
+              <span id="result-block"></span>
+            </div>
+          </div>
         </div>
       </section>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyBzkF00G5ICljew4q4Ut3ygR1F2RIMm3Lc"></script>
-    <script src="/assets/js/script.js"></script>
+    <!-- <script src="/assets/js/script.js"></script> -->
+    <script src="/assets/js/autocomplete.js"></script>
   </body>
 </html>

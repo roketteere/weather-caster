@@ -1,190 +1,92 @@
-const endpoint = 'https://www.mapquestapi.com/search/v3/prediction?key=ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP&limit=5&collection=address,city&q=';
+var base = 'https://www.mapquestapi.com/search/v3/prediction?key=ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP&limit=5&collection=address,city&q=';
 
 
-const cities = [];
+var cities = [];
 
-// fetch grabs endpoint - at this point a promise and generates readablestream
-fetch(endpoint).then(blob => blob.json()).then(data => cities.push(...data));
+// / MAKE function and add the input being typed to the end
+// / Create arrays for char length
+var searchButton = document.querySelector("#search-button");
+var searchBox = document.querySelector("#search")
+var resultContainer = document.querySelector("#results");
+function fetchMapData(keyword) {
 
-function findMatches(keyword, cities) {
-    return cities.filter(place => { // does city or state match? use paramater regex
-        const regex = new RegExp(keyword, 'g');
-        return place.city.match(regex) || place.state.match(regex)
+
+    fetch(`https://www.mapquestapi.com/search/v3/prediction?key=ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP&limit=5&collection=address,city&q=${keyword}`).then(promise => promise.json()).then(data => {
+
+        JSON.stringify(data);
+        console.log(data.results);
+        for (var i = 0; i < data.results.length; i++) {
+
+            var city = data.results[i].name;
+
+            var state = data.results[i].place.properties.state;
+
+
+            var longitude = data.results[i].place.geometry.coordinates[0];
+
+
+            var latitude = data.results[i].place.geometry.coordinates[1];
+
+
+            cities.push([city, state, latitude, latitude]);
+
+            console.log('Last Log: \n' + cities[i]);
+            console.log(`City: ${city}\nState: \n${state}\nLongitude: ${longitude}\nLatitude: ${latitude}`)
+
+
+        }
+
+
     });
 }
 
-// add results to HTML li
-function displayMatches() {
-    const matchArray = findMatches(this.value, cities)
-    const html = matchArray.map(place => {
 
-        const regex = new RegExp(this.value, 'g');
-        const cityName = place.city.replace(regex, `<span class="highlight">${
-            this.value
-        }</span>`);
-        const stateName = place.state.replace(regex, `<span class="hl">${
-            this.value
-        }</span>`);
-
-        return `
-      <li>
-        <span class="name">${cityName}, ${stateName}</span>
-        <span class="population">${
-            place.population
-        }</span>
-      </li>
-    `;
-    }).join('');
-
-    suggestions.innerHTML = html;
-}
-
-const searchInput = document.querySelector('#search');
-const suggestions = document.querySelector('.suggestions');
-
-searchInput.addEventListener('change', displayMatches);
-searchInput.addEventListener('keyup', displayMatches);
-
-//
-//
-// OTHER METHOD - Combine the two
-//
-const input = document.querySelector('#fruit');
-const suggestions = document.querySelector('.suggestions ul');
-
-const fruit = [
-    'Apple',
-    'Apricot',
-    'Avocado 🥑',
-    'Banana',
-    'Bilberry',
-    'Blackberry',
-    'Blackcurrant',
-    'Blueberry',
-    'Boysenberry',
-    'Currant',
-    'Cherry',
-    'Coconut',
-    'Cranberry',
-    'Cucumber',
-    'Custard apple',
-    'Damson',
-    'Date',
-    'Dragonfruit',
-    'Durian',
-    'Elderberry',
-    'Feijoa',
-    'Fig',
-    'Gooseberry',
-    'Grape',
-    'Raisin',
-    'Grapefruit',
-    'Guava',
-    'Honeyberry',
-    'Huckleberry',
-    'Jabuticaba',
-    'Jackfruit',
-    'Jambul',
-    'Juniper berry',
-    'Kiwifruit',
-    'Kumquat',
-    'Lemon',
-    'Lime',
-    'Loquat',
-    'Longan',
-    'Lychee',
-    'Mango',
-    'Mangosteen',
-    'Marionberry',
-    'Melon',
-    'Cantaloupe',
-    'Honeydew',
-    'Watermelon',
-    'Miracle fruit',
-    'Mulberry',
-    'Nectarine',
-    'Nance',
-    'Olive',
-    'Orange',
-    'Clementine',
-    'Mandarine',
-    'Tangerine',
-    'Papaya',
-    'Passionfruit',
-    'Peach',
-    'Pear',
-    'Persimmon',
-    'Plantain',
-    'Plum',
-    'Pineapple',
-    'Pomegranate',
-    'Pomelo',
-    'Quince',
-    'Raspberry',
-    'Salmonberry',
-    'Rambutan',
-    'Redcurrant',
-    'Salak',
-    'Satsuma',
-    'Soursop',
-    'Star fruit',
-    'Strawberry',
-    'Tamarillo',
-    'Tamarind',
-    'Yuzu'
-];
-
-function search(str) {
-    let results = [];
-    const val = str.toLowerCase();
-
-    for (i = 0; i < fruit.length; i ++) {
-        if (fruit[i].toLowerCase().indexOf(val) > -1) {
-            results.push(fruit[i]);
-        }
-    }
-
-    return results;
-}
-
-function searchHandler(e) {
-    const inputVal = e.currentTarget.value;
-    let results = [];
-    if (inputVal.length > 0) {
-        results = search(inputVal);
-    }
-    showSuggestions(results, inputVal);
-}
-
-function showSuggestions(results, inputVal) {
-
-    suggestions.innerHTML = '';
-
-    if (results.length > 0) {
-        for (i = 0; i < results.length; i ++) {
-            let item = results[i];
-            // Highlights only the first match
-            // TODO: highlight all matches
-            const match = item.match(new RegExp(inputVal, 'i'));
-            item = item.replace(match[0], `<strong>${
-                match[0]
-            }</strong>`);
-            suggestions.innerHTML += `<li>${item}</li>`;
-        }
-        suggestions.classList.add('has-suggestions');
+searchButton.addEventListener('click', function (event) {
+    if (info === undefined) {
+        alert("No Input Detected")
+        return
     } else {
-        results = [];
-        suggestions.innerHTML = '';
-        suggestions.classList.remove('has-suggestions');
+        event.target
+
+        fetchMapData(info)
+
+
     }
-}
 
-function useSuggestion(e) {
-    input.value = e.target.innerText;
-    input.focus();
-    suggestions.innerHTML = '';
-    suggestions.classList.remove('has-suggestions');
-}
+    var info = searchBox.value;
+    if (info === undefined) {
+        alert("No Input Detected")
 
-input.addEventListener('keyup', searchHandler);
-suggestions.addEventListener('click', useSuggestion);
+        return
+    } else {
+        event.target
+
+        fetchMapData(info)
+
+
+    }
+
+
+});
+
+searchBox.addEventListener('keydown', function (event) {
+    var info = searchBox.value;
+    if (info === undefined) {
+
+        return
+    } else {
+        event.target
+
+        fetchMapData(info)
+
+
+    }
+
+});
+
+searchBox.addEventListener('keyup', function (event) {
+    var info = searchBox.value;
+
+    fetchMapData(info)
+    event.target
+});
