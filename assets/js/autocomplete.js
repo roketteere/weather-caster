@@ -87,6 +87,17 @@ searchBox.addEventListener('keydown', function (event) {
 searchBox.addEventListener('keyup', function (event) {
     var info = searchBox.value;
 
-    fetchMapData(info)
-    event.target
+    if (info === undefined) {
+
+
+        return
+    } else {
+        event.target
+
+        fetchMapData(info)
+
+
+    }
+
+
 });
