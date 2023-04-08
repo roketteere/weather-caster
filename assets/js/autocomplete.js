@@ -12,9 +12,7 @@ var searchBox = document.querySelector("#search")
 function fetchMapData(keyword) {
 
 
-    fetch(`https://www.mapquestapi.com/search/v3/prediction?key=ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP&limit=5&collection=address,city&q=${keyword}`).then(promise => promise.json()).then(data => {
-
-        JSON.stringify(data);
+    fetch(`https://www.mapquestapi.com/search/v3/prediction?key=ceiWumpWrG5aqAOi4bsRb8BIkjPl3vtP&limit=5&collection=address,city&q=${keyword}`).then(promise => promise.json()).then(data => { // JSON.stringify(data);
         console.log(data.results);
         for (var i = 0; i < data.results.length; i++) {
 
