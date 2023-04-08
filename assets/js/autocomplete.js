@@ -55,8 +55,6 @@ searchButton.addEventListener('click', function (event) {
 
     var info = searchBox.value;
     if (info === undefined) {
-        alert("No Input Detected")
-
         return
     } else {
         event.target
