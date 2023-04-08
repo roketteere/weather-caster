@@ -3,11 +3,12 @@ var base = 'https://www.mapquestapi.com/search/v3/prediction?key=ceiWumpWrG5aqAO
 
 var cities = [];
 
-// / MAKE function and add the input being typed to the end
-// / Create arrays for char length
+
 var searchButton = document.querySelector("#search-button");
 var searchBox = document.querySelector("#search")
-var resultContainer = document.querySelector("#results");
+// var resultContainer = document.querySelector("#results");
+
+// Fetch function to get our data, slice what we need for each item in the results found
 function fetchMapData(keyword) {
 
 
@@ -31,7 +32,7 @@ function fetchMapData(keyword) {
             cities.push([city, state, latitude, latitude]);
 
             console.log('Last Log: \n' + cities[i]);
-            console.log(`City: ${city}\nState: \n${state}\nLongitude: ${longitude}\nLatitude: ${latitude}`)
+            console.log(`City: ${city}\nState: ${state}\nLongitude: ${longitude}\nLatitude: ${latitude}`)
 
 
         }
@@ -39,9 +40,10 @@ function fetchMapData(keyword) {
 
     });
 }
-
-
+// Event listener for the search button. If the user hasn't typed anything it, it will display an alert letting them know they need to enter search parameters first. This way they can't use up API requests unnecessarily. We pass in
 searchButton.addEventListener('click', function (event) {
+    var info = searchBox.value;
+
     if (info === undefined) {
         alert("No Input Detected")
         return
